@@ -1,5 +1,6 @@
 # import plotly.express as px
 import warnings
+
 zip_file_path = "app.zip"
 
 # !pip install matplotlib
@@ -13,8 +14,8 @@ import pandas as pd
 import streamlit as st
 from prophet.diagnostics import performance_metrics
 
-import model
-import prevel_model
+#import model
+#import prevel_model
 
 # Ignorar os FutureWarnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
@@ -190,7 +191,7 @@ if uploaded_file is not None and not df.empty and 'ds' in df.columns:
         unsafe_allow_html=True
     )
     # Definindo guias
-    tabs = ["Conceitos","MAE", "MAPE", "RMSE", "Acurácia"]
+    tabs = ["Conceitos", "MAE", "MAPE", "RMSE", "Acurácia"]
     selected_tab = st.sidebar.radio("Escolha uma métrica:", tabs)
 
     # Conteúdo das guias
