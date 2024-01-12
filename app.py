@@ -36,7 +36,8 @@ if not os.path.exists(temp_dir):
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Constrói o caminho para o arquivo ZIP
-zip_path = os.path.join(script_dir, 'data', 'app.zip')
+zip_path = "https://raw.githubusercontent.com/Henitz/projeto3/master/data/app.zip"
+
 
 # Verifica se o arquivo ZIP existe
 if os.path.exists(zip_path):
