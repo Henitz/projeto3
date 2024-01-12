@@ -7,10 +7,12 @@ import requests
 # Limpeza do diretório temporário antes de extrair o ZIP
 shutil.rmtree("temp_extracted", ignore_errors=True)
 
+
 # Função para extrair arquivos ZIP
 def extract_zip(zip_path, temp_dir):
     with zipfile.ZipFile(zip_path, 'r') as zip_ref:
         zip_ref.extractall(temp_dir)
+
 
 # Função para limpar o diretório temporário
 def clean_temp_dir(temp_dir):
@@ -21,6 +23,7 @@ def clean_temp_dir(temp_dir):
         for dir in dirs:
             dir_path = os.path.join(root, dir)
             os.rmdir(dir_path)
+
 
 # Configuração do Streamlit
 st.title("Aplicativo Streamlit para Processar Arquivo .zip")
