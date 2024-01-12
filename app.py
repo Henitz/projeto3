@@ -1,18 +1,16 @@
 import streamlit as st
 import os
 import zipfile
-import shutil
 import requests
+import shutil
 
 # Limpeza do diretório temporário antes de extrair o ZIP
 shutil.rmtree("temp_extracted", ignore_errors=True)
-
 
 # Função para extrair arquivos ZIP
 def extract_zip(zip_path, temp_dir):
     with zipfile.ZipFile(zip_path, 'r') as zip_ref:
         zip_ref.extractall(temp_dir)
-
 
 # Função para limpar o diretório temporário
 def clean_temp_dir(temp_dir):
@@ -23,7 +21,6 @@ def clean_temp_dir(temp_dir):
         for dir in dirs:
             dir_path = os.path.join(root, dir)
             os.rmdir(dir_path)
-
 
 # Configuração do Streamlit
 st.title("Aplicativo Streamlit para Processar Arquivo .zip")
@@ -36,25 +33,24 @@ if not os.path.exists(temp_dir):
     os.makedirs(temp_dir)
 
 # URL do arquivo ZIP no GitHub
-zip_url = "https://github.com/Henitz/projeto3/raw/master/data/data.zip"
+zip_url = "https://github.com/Henitz/streamlit/raw/master/data.zip"
 
-# Baixa o arquivo ZIP
-response = requests.get(zip_url)
-zip_path = os.path.join(temp_dir, "data.zip")
+# Nome do arquivo ZIP após o download
+zip_filename = os.path.join(temp_dir, "data.zip")
 
-with open(zip_path, "wb") as f:
-    f.write(response.content)
+# Baixar o arquivo ZIP
+response = requests.get(zip_url, stream=True)
+with open(zip_filename, 'wb') as zip_file:
+    shutil.copyfileobj(response.raw, zip_file)
 
-# Mensagem de sucesso
-st.success("Arquivo ZIP baixado com sucesso!")
-
-if st.button("Executar"):
+# Verifica se o arquivo ZIP foi baixado com sucesso
+if os.path.exists(zip_filename):
     try:
         # Limpa o diretório temporário antes da extração
         clean_temp_dir(temp_dir)
 
         # Extrai os arquivos do ZIP para o diretório temporário
-        extract_zip(zip_path, temp_dir)
+        extract_zip(zip_filename, temp_dir)
 
         st.success("Arquivo ZIP extraído com sucesso!")
 
@@ -65,3 +61,6 @@ if st.button("Executar"):
 
     except Exception as e:
         st.error(f"Erro ao extrair o arquivo ZIP: {e}")
+
+else:
+    st.warning("O arquivo ZIP não foi encontrado. Verifique o caminho.")
