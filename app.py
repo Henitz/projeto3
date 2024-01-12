@@ -1,8 +1,8 @@
 import streamlit as st
 import os
 import zipfile
-import requests
 import shutil
+import subprocess
 
 # Limpeza do diretório temporário antes de extrair o ZIP
 shutil.rmtree("temp_extracted", ignore_errors=True)
@@ -32,32 +32,33 @@ temp_dir = "temp_extracted"
 if not os.path.exists(temp_dir):
     os.makedirs(temp_dir)
 
-# URL do arquivo ZIP no GitHub
-zip_url = "https://github.com/Henitz/streamlit/raw/master/data.zip"
+# Obtém o caminho absoluto do diretório do script
+script_dir = os.path.dirname(os.path.abspath(__file__))
 
-# Nome do arquivo ZIP após o download
-zip_filename = os.path.join(temp_dir, "data.zip")
+# Constrói o caminho para o arquivo ZIP
+zip_path = os.path.join(script_dir, 'data', 'app.zip')
 
-# Baixar o arquivo ZIP
-response = requests.get(zip_url, stream=True)
-with open(zip_filename, 'wb') as zip_file:
-    shutil.copyfileobj(response.raw, zip_file)
-
-# Verifica se o arquivo ZIP foi baixado com sucesso
-if os.path.exists(zip_filename):
+# Verifica se o arquivo ZIP existe
+if os.path.exists(zip_path):
     try:
         # Limpa o diretório temporário antes da extração
         clean_temp_dir(temp_dir)
 
         # Extrai os arquivos do ZIP para o diretório temporário
-        extract_zip(zip_filename, temp_dir)
+        extract_zip(zip_path, temp_dir)
 
         st.success("Arquivo ZIP extraído com sucesso!")
 
         # Executando o arquivo projeto.py
         projeto_path = os.path.join(temp_dir, "projeto.py")
+
         st.write(f"Executando {projeto_path}")
-        os.system(f"streamlit run {projeto_path}")
+
+        # Comando para executar o Streamlit
+        comando_streamlit = f"streamlit run {projeto_path}"
+
+        # Executando o comando
+        subprocess.run(comando_streamlit, shell=True)
 
     except Exception as e:
         st.error(f"Erro ao extrair o arquivo ZIP: {e}")
