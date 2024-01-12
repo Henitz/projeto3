@@ -1,15 +1,16 @@
 import streamlit as st
 import os
 import zipfile
+import requests
+from io import BytesIO
 import shutil
-import subprocess
 
 # Limpeza do diretório temporário antes de extrair o ZIP
 shutil.rmtree("temp_extracted", ignore_errors=True)
 
 # Função para extrair arquivos ZIP
-def extract_zip(zip_path, temp_dir):
-    with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+def extract_zip(zip_content, temp_dir):
+    with zipfile.ZipFile(zip_content, 'r') as zip_ref:
         zip_ref.extractall(temp_dir)
 
 # Função para limpar o diretório temporário
@@ -32,37 +33,33 @@ temp_dir = "temp_extracted"
 if not os.path.exists(temp_dir):
     os.makedirs(temp_dir)
 
-# Obtém o caminho absoluto do diretório do script
-script_dir = os.path.dirname(os.path.abspath(__file__))
+# URL do arquivo ZIP no GitHub
+zip_url = "https://github.com/Henitz/projeto3/raw/master/data/app.zip"
 
-# Constrói o caminho para o arquivo ZIP
-zip_path = "https://raw.githubusercontent.com/Henitz/projeto3/master/data/app.zip"
+# Obtendo o conteúdo do arquivo ZIP
+zip_content = requests.get(zip_url).content
 
-
-# Verifica se o arquivo ZIP existe
-if os.path.exists(zip_path):
+# Verificando se o conteúdo do ZIP foi obtido corretamente
+if zip_content:
     try:
         # Limpa o diretório temporário antes da extração
         clean_temp_dir(temp_dir)
 
         # Extrai os arquivos do ZIP para o diretório temporário
-        extract_zip(zip_path, temp_dir)
+        extract_zip(BytesIO(zip_content), temp_dir)
 
         st.success("Arquivo ZIP extraído com sucesso!")
 
         # Executando o arquivo projeto.py
         projeto_path = os.path.join(temp_dir, "projeto.py")
-
         st.write(f"Executando {projeto_path}")
-
-        # Comando para executar o Streamlit
-        comando_streamlit = f"streamlit run {projeto_path}"
-
-        # Executando o comando
-        subprocess.run(comando_streamlit, shell=True)
+        os.system(f"streamlit run {projeto_path}")
 
     except Exception as e:
         st.error(f"Erro ao extrair o arquivo ZIP: {e}")
 
 else:
-    st.warning("O arquivo ZIP não foi encontrado. Verifique o caminho.")
+    st.warning("O arquivo ZIP não foi encontrado. Verifique a URL.")
+
+# Agora, você pode prosseguir com o processamento dos arquivos conforme necessário
+# ...
