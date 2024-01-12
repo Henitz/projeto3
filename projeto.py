@@ -14,8 +14,8 @@ import pandas as pd
 import streamlit as st
 from prophet.diagnostics import performance_metrics
 
-#import model
-#import prevel_model
+import model
+import prevel_model
 
 # Ignorar os FutureWarnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
@@ -23,8 +23,8 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 # selected_date = '2024-01-25'  # Replace this with the selected date
 # selected_time = pd.Timestamp('00:00:00').time()
 
-from model import modelo
-from prevel_model import prevendo
+# from model import modelo
+# from prevel_model import prevendo
 
 import pandas as pd
 import numpy as np
