@@ -2,6 +2,7 @@ import streamlit as st
 import os
 import zipfile
 import shutil
+import requests
 
 # Limpeza do diretório temporário antes de extrair o ZIP
 shutil.rmtree("temp_extracted", ignore_errors=True)
@@ -31,8 +32,18 @@ temp_dir = "temp_extracted"
 if not os.path.exists(temp_dir):
     os.makedirs(temp_dir)
 
-# Mensagem para o usuário fornecer o caminho do arquivo ZIP
-zip_path = st.text_input("Digite o caminho do arquivo ZIP:")
+# URL do arquivo ZIP no GitHub
+zip_url = "https://github.com/Henitz/projeto3/raw/master/data/data.zip"
+
+# Baixa o arquivo ZIP
+response = requests.get(zip_url)
+zip_path = os.path.join(temp_dir, "data.zip")
+
+with open(zip_path, "wb") as f:
+    f.write(response.content)
+
+# Mensagem de sucesso
+st.success("Arquivo ZIP baixado com sucesso!")
 
 if st.button("Executar"):
     try:
