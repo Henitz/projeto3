@@ -14,8 +14,8 @@ import pandas as pd
 import streamlit as st
 from prophet.diagnostics import performance_metrics
 
-import model
-import prevel_model
+#import model
+#import prevel_model
 
 # Ignorar os FutureWarnings
 warnings.simplefilter(action='ignore', category=FutureWarning)

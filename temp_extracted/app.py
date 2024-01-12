@@ -1,40 +1,55 @@
 import streamlit as st
-import zipfile
 import os
+import zipfile
 
-st.title("Aplicativo Streamlit para Processar Arquivo .zip")
+# Função para extrair arquivos ZIP
+def extract_zip(zip_path, temp_dir):
+    with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+        zip_ref.extractall(temp_dir)
 
-# Carregar o arquivo .zip
-zip_file_path = os.path.join("data", "app.zip")
+# Função para limpar o diretório temporário
+def clean_temp_dir(temp_dir):
+    for root, dirs, files in os.walk(temp_dir):
+        for file in files:
+            file_path = os.path.join(root, file)
+            os.remove(file_path)
+        for dir in dirs:
+            dir_path = os.path.join(root, dir)
+            os.rmdir(dir_path)
 
-with zipfile.ZipFile(zip_file_path, 'r') as zip_ref:
-    # Extraindo o conteúdo para um diretório temporário
-    temp_dir = "temp_extracted"
-    zip_ref.extractall(temp_dir)
+# Configuração do Streamlit
+st.title("Aplicação Streamlit")
 
-    # Listando os arquivos extraídos
-    extracted_files = os.listdir(temp_dir)
+# Diretório temporário para extração
+temp_dir = "temp_extracted"
 
-    # Exibindo a lista de arquivos extraídos
-    st.write("Arquivos extraídos:")
-    for file in extracted_files:
-        st.write(file)
+# Verifica se o diretório temporário existe, senão, cria
+if not os.path.exists(temp_dir):
+    os.makedirs(temp_dir)
 
-    model_file_path = "model.py"
+# Caminho do arquivo ZIP
+zip_path = "data/arquivo.zip"
 
-    # Verificar se o arquivo model.py está presente no diretório
-    if os.path.isfile(model_file_path):
-        try:
-            # Tente importar o arquivo model.py
-            import model
+# Verifica se o arquivo ZIP existe
+if os.path.exists(zip_path):
+    try:
+        # Limpa o diretório temporário antes da extração
+        clean_temp_dir(temp_dir)
 
-            print("Arquivo model.py encontrado e importado com sucesso!")
-        except ImportError as e:
-            print(f"Erro ao importar model.py: {e}")
-    else:
-        print(f"Arquivo model.py não encontrado no diretório.")
+        # Extrai os arquivos do ZIP para o diretório temporário
+        extract_zip(zip_path, temp_dir)
 
-    # Executando o arquivo projeto.py
-    projeto_path = os.path.join(temp_dir, "projeto.py")
-    st.write(f"Executando {projeto_path}")
-    os.system(f"streamlit run {projeto_path}")
+        st.success("Arquivo ZIP extraído com sucesso!")
+
+        # Aqui você pode continuar o código para processar os arquivos extraídos
+        # ...
+
+    except Exception as e:
+        st.error(f"Erro ao extrair o arquivo ZIP: {e}")
+
+else:
+    st.warning("O arquivo ZIP não foi encontrado. Verifique o caminho.")
+
+# Notas adicionais:
+# Certifique-se de substituir "caminho/do/seu/arquivo.zip" pelo caminho real do seu arquivo ZIP.
+# Adicione o restante do código para processar os arquivos extraídos conforme necessário.
