@@ -277,7 +277,7 @@ if uploaded_file is not None and not df.empty and 'ds' in df.columns:
     btn = st.button("Previsão")
 
     if btn:
-        x = prevendo(df, data2, flag)
+        x = prevel_model.prevendo(df, data2, flag)
         if x is None:
             st.write(f"A data {data2} não está disponível nas previsões ou é feriado/final de semana.")
         else:
