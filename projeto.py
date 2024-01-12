@@ -78,7 +78,7 @@ tab_contents = {
 
         Aqui estão alguns pontos-chave sobre o Prophet:
 
-        <ol>
+        <ul>
             <li>Facilidade de Uso: O Prophet foi desenvolvido para ser acessível e fácil de usar, permitindo que usuários, mesmo sem experiência avançada em séries temporais, possam construir modelos de previsão.</li>
             <li>Componentes Aditivos: O modelo do Prophet é baseado em componentes aditivos, onde são consideradas tendências anuais, sazonais e efeitos de feriados, além de componentes de regressão.</li>
             <li>Tratamento de Dados Ausentes e Outliers: O Prophet lida bem com dados ausentes e outliers, reduzindo a necessidade de pré-processamento extensivo dos dados antes da modelagem.</li>
@@ -86,7 +86,7 @@ tab_contents = {
             <li>Estimativa Automática de Intervalos de Incerteza: O Prophet fornece intervalos de incerteza para as previsões, o que é essencial para compreender a confiabilidade dos resultados.</li>
             <li>Implementação em Python e R: Está disponível tanto para Python quanto para R, ampliando sua acessibilidade para diferentes comunidades de usuários.</li>
             <li>Comunidade Ativa e Documentação Detalhada: A biblioteca possui uma comunidade ativa de usuários e desenvolvedores, além de uma documentação detalhada e exemplos práticos que ajudam na aprendizagem e na solução de problemas.</li>
-        </ol>
+        </ul>
     </div>
     """,
     "Utilização do Prophet": """
